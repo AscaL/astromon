@@ -1,0 +1,32 @@
+---
+import Card from "../components/Card.astro";
+
+type Pokemon = {
+    url: string;
+    name: string;
+};
+
+const fetchPokemons = async (pokemons: Pokemon[]) => {
+    const pokemonsWithDetails = pokemons.map(async (pokemon) => {
+       const response =  await fetch(pokemon.url)
+       const result = await response.json()
+       return result
+    })
+    const pokemonData = await Promise.allSettled(pokemonsWithDetails)
+   return pokemonData 
+}
+
+const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+const result = await response.json();
+const pokemons: Pokemon[] = result.results
+const pokemonData = await fetchPokemons(pokemons) 
+
+---
+
+<div class="grid gap-2 grid-cols-3 justify-center px-10 mx-48">
+    {
+        pokemonData.map((pokemon as Pokemon) => (
+            <Card href={pokemon.value.url} body={pokemon.value.name} title={pokemon.value.name} imgSrc={pokemon.value.sprites.front_default} />
+        ))
+    }
+</div>

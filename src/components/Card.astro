@@ -3,30 +3,38 @@ export interface Props {
 	title: string;
 	body: string;
 	href: string;
+	imgSrc: string;
 }
 
-const { href, title, body } = Astro.props as Props;
+const { href, title, body, imgSrc } = Astro.props as Props;
 ---
 
-<li class="link-card">
-	<a href={href}>
+<div
+	class="link-card justify-center w-auto items-center shadow-lg shadow-black/30 grid grid-rows-2"
+>
+	<div>
 		<h2>
 			{title}
 			<span>&rarr;</span>
 		</h2>
-		<p>
-			{body}
-		</p>
-	</a>
-</li>
+	</div>
+	<div class="m-auto">
+		<img src={imgSrc} alt={title} />
+	</div>
+</div>
 <style>
 	:root {
-		--link-gradient: linear-gradient(45deg, #4f39fa, #da62c4 30%, var(--color-border) 60%);
+		--link-gradient: linear-gradient(
+			45deg,
+			#4f39fa,
+			#da62c4 30%,
+			var(--color-border) 60%
+		);
 	}
 
 	.link-card {
 		list-style: none;
-		display: flex;
+		/* display: flex; */
 		padding: 0.15rem;
 		background-image: var(--link-gradient);
 		background-size: 400%;
